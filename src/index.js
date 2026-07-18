@@ -36,6 +36,33 @@ const APPLICATIONS_PER_CYCLE = 1;
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export async function runJobSearchCycle() {
+  // Modo setup: valida que cada componente carga, sin ejecutar búsquedas
+  // ni postulaciones. Se activa con SETUP_MODE=1 en .env.local.
+  if (process.env.SETUP_MODE === "1") {
+    const components = [
+      ["Scraper listo", "./scrapers/index.js"],
+      ["Evaluador listo", "./evaluator.js"],
+      ["Mailer (stub)", "./mailer.js"],
+      ["Profiler (stub)", "./profiler.js"],
+    ];
+    let allOk = true;
+    for (const [label, modulePath] of components) {
+      try {
+        await import(modulePath);
+        console.log(`[✓] ${label}`);
+      } catch (error) {
+        allOk = false;
+        console.log(`[✗] ${label}: ${error.message}`);
+      }
+    }
+    console.log(
+      allOk
+        ? "Sistema listo. NO se ejecutaron búsquedas (modo setup)"
+        : "Hay componentes con errores (ver arriba)"
+    );
+    return;
+  }
+
   console.log(`\n${"=".repeat(60)}`);
   console.log(`[${new Date().toISOString()}] Iniciando ciclo de búsqueda`);
   console.log(`${"=".repeat(60)}\n`);

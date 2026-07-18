@@ -15,6 +15,9 @@ Credenciales.txt
 test-results/
 playwright-report/
 
+# Vista previa del email diario (generada por node src/mailer.js)
+email-preview.html
+
 # Logs y sistema operativo
 *.log
 .DS_Store

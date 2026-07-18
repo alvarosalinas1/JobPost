@@ -1,0 +1,34 @@
+name: Daily Email
+
+on:
+  schedule:
+    # Lun-Vie 10:00 Santiago (UTC-4 en invierno chileno) → 14:00 UTC
+    - cron: "0 14 * * 1-5"
+  workflow_dispatch: {}
+
+jobs:
+  daily-email:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      # El envío real está desactivado en src/mailer.js (stub): este paso
+      # genera el email y solo loguea "Email generado (no enviado aún)".
+      - name: Generar email diario
+        run: node src/mailer.js
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+          RECIPIENT_EMAIL: ${{ vars.RECIPIENT_EMAIL || 'alvarosalinass@hotmail.com' }}
+          WEBHOOK_BASE_URL: ${{ vars.WEBHOOK_BASE_URL }}

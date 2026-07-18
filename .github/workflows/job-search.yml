@@ -65,6 +65,8 @@ jobs:
           MAX_SALARY: ${{ vars.MAX_SALARY || '1200000' }}
           LOCATION: ${{ vars.LOCATION || 'Santiago' }}
           DAYS_BACK: ${{ vars.DAYS_BACK || '14' }}
-          SEARCH_TERMS: ${{ vars.SEARCH_TERMS || 'coordinador operaciones,supervisor logistica,mejora procesos' }}
+          # Incluye aerolíneas y bienestar. Configura la variable SEARCH_TERMS
+          # del repo con el mismo valor de .env.local para sobreescribir.
+          SEARCH_TERMS: ${{ vars.SEARCH_TERMS || 'coordinador operaciones,supervisor logistica,mejora procesos,aerolíneas,bienestar' }}
           CANDIDATE_PROFILE: ${{ vars.CANDIDATE_PROFILE }}
           REST_CYCLE_PROB: ${{ vars.REST_CYCLE_PROB || '0.3' }}

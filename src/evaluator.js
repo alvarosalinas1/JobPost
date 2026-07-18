@@ -16,7 +16,7 @@ const DEFAULT_MODEL = "llama-3.3-70b-versatile";
 
 // Áreas prioritarias del perfil del candidato.
 const PRIORITY_AREAS =
-  "logística, coordinación, supervisión de equipos, operaciones, bienestar y liderazgo";
+  "logística, coordinación, supervisión de equipos, operaciones, aerolíneas/aviación, bienestar y liderazgo";
 
 const BONUS_LEADERSHIP = /desarrollo personal|liderazgo/i;
 const BONUS_REMOTE =
