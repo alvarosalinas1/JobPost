@@ -70,3 +70,11 @@ jobs:
           SEARCH_TERMS: ${{ vars.SEARCH_TERMS || 'coordinador operaciones,supervisor logistica,mejora procesos,aerolíneas,bienestar' }}
           CANDIDATE_PROFILE: ${{ vars.CANDIDATE_PROFILE }}
           REST_CYCLE_PROB: ${{ vars.REST_CYCLE_PROB || '0.3' }}
+          # Credenciales de los portales de empleo (login para completar
+          # postulaciones). Se leen desde GitHub Secrets; nunca se imprimen.
+          COMPUTRABAJO_EMAIL: ${{ secrets.COMPUTRABAJO_EMAIL }}
+          COMPUTRABAJO_PASSWORD: ${{ secrets.COMPUTRABAJO_PASSWORD }}
+          TRABAJANDO_EMAIL: ${{ secrets.TRABAJANDO_EMAIL }}
+          TRABAJANDO_PASSWORD: ${{ secrets.TRABAJANDO_PASSWORD }}
+          LABORUM_EMAIL: ${{ secrets.LABORUM_EMAIL }}
+          LABORUM_PASSWORD: ${{ secrets.LABORUM_PASSWORD }}

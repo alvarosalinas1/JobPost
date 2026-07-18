@@ -20,6 +20,8 @@ import {
   launchBrowser,
   applyIndeed,
   applyComputrabajo,
+  applyTrabajando,
+  applyLaborum,
   applyGeneric,
 } from "./applier.js";
 import { isRestCycle, sleepRandom } from "../utils/anti-bot.js";
@@ -27,6 +29,8 @@ import { isRestCycle, sleepRandom } from "../utils/anti-bot.js";
 const PLATFORM_APPLIERS = {
   Indeed: applyIndeed,
   Computrabajo: applyComputrabajo,
+  Trabajando: applyTrabajando,
+  Laborum: applyLaborum,
 };
 
 const EVALUATIONS_PER_CYCLE = 10;
@@ -44,6 +48,8 @@ export async function runJobSearchCycle() {
       ["Evaluador listo", "./evaluator.js"],
       ["Mailer (stub)", "./mailer.js"],
       ["Profiler (stub)", "./profiler.js"],
+      ["Profile scraper (stub, sin login)", "./scrapers/profile-scraper.js"],
+      ["Applier con login (stub, sin credenciales)", "./applier.js"],
     ];
     let allOk = true;
     for (const [label, modulePath] of components) {
@@ -134,8 +140,10 @@ export async function runJobSearchCycle() {
           await updateApplicationStatus(job.id, "applied", result.note);
           console.log(`    ✓ Postulado`);
         } else {
-          await updateApplicationStatus(job.id, "apply_failed", result.note);
-          console.log(`    ✗ Falló: ${result.note}`);
+          // status puede ser "login_failed" cuando el login del portal falla
+          const status = result.status || "apply_failed";
+          await updateApplicationStatus(job.id, status, result.note);
+          console.log(`    ✗ Falló (${status}): ${result.note}`);
         }
       } catch (error) {
         await recordFailure(job.id, error.message);
