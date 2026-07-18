@@ -1,0 +1,21 @@
+# Dependencias
+node_modules/
+
+# Credenciales y entorno — NUNCA subir
+.env
+.env.local
+.env*.local
+.env.local.txt
+Credenciales.txt
+
+# Vercel
+.vercel/
+
+# Playwright
+test-results/
+playwright-report/
+
+# Logs y sistema operativo
+*.log
+.DS_Store
+Thumbs.db
