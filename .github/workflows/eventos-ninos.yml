@@ -1,0 +1,45 @@
+name: 🎪 Eventos Niños - Email Diario
+
+on:
+  schedule:
+    # Domingo, miércoles y viernes a las 18:00 UTC = 15:00 CLT
+    - cron: '0 18 * * 0,3,5'
+  workflow_dispatch:  # Permite ejecutar manualmente
+
+jobs:
+  scrape-and-email:
+    name: Scrape eventos y envía email
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: 📦 Install dependencies
+        run: npm install
+
+      - name: 🎪 Run eventos_ninos
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+          SENDGRID_SENDER: alvarosalinass@hotmail.com
+          # El script lee EMAIL_FROM como remitente (SENDGRID_SENDER no lo lee).
+          # Debe ser un remitente verificado en SendGrid o la API devuelve 403.
+          EMAIL_FROM: alvarosalinass@hotmail.com
+          EMAIL_DESTINO: alvarosalinass@hotmail.com
+        run: node eventos_ninos-node.js
+
+      - name: ✅ Success notification
+        if: success()
+        run: echo "✅ Email enviado exitosamente a alvarosalinass@hotmail.com"
+
+      - name: ❌ Failure notification
+        if: failure()
+        run: echo "❌ Error ejecutando eventos_ninos"
